@@ -14,8 +14,8 @@ const Home = () => {
             try {
                 const popularMovies = await getPopularMovies()
                 setMovies(popularMovies)
-            } catch (error) {
-               console.log(error); 
+            } catch (err) {
+               console.log(err); 
                setError("Failed to load movies...")
             } finally {
                 setLoading(false)
@@ -25,15 +25,28 @@ const Home = () => {
     }, [])
 
 
-    const handleSubmit = (e) => {
+    const handleSearch = async (e) => {
         e.preventDefault();
-        alert(searchQuery) 
-        setSearchQuery("")
+        if (!searchQuery.trim()) return;
+        if (loading) return;
+
+        setLoading(true);
+
+        try {
+            const searchResults = await searchMovies(searchQuery);
+            setMovies(searchResults);
+            setError(null)
+        } catch (error) {
+            console.log(error)
+            setError("Failed to search movie...")
+        } finally {
+            setLoading(false)
+        }
     }
 
   return (
     <div className="home">
-        <form className="search-form" onSubmit={handleSubmit}>
+        <form className="search-form" onSubmit={handleSearch}>
             <input 
                 type="text"
                 placeholder="Search for movies..."
