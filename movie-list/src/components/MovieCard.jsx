@@ -1,8 +1,8 @@
 import "../css/MovieCard.css"
-import {useMovieContext} from "../contexts/MovieContext"
+import { useMovieContext } from "../contexts/MovieContext";
 
 const MovieCard = ({ movie }) => {
-    const [isFavorite, addToFavorites, removeFromFavorites] = useMovieContext();
+    const { isFavorite, addToFavorites, removeFromFavorites } = useMovieContext();
     const favorite = isFavorite(movie.id)
 
 
